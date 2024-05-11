@@ -11,19 +11,56 @@ export class PostService {
   constructor(private readonly prisma: PrismaService) { }
 
   // Get all existing posts
-  async getAllPosts(): Promise<Post[]> {
-    const posts = await this.prisma.post.findMany();
-    return posts;
+
+  async getAllPosts(
+    cursor: string | undefined,
+    pageSize: number,
+  ): Promise<{ posts: Post[]; nextCursor: string | null }> {
+    const cursorDirection = cursor
+      ? { cursor: { id: cursor } }
+      : { cursor: undefined };
+
+    const posts = await this.prisma.post.findMany({
+      ...cursorDirection,
+      take: pageSize + 1,
+      orderBy: { createdAt: 'desc' },
+    });
+
+    let nextCursor: string | null = null;
+
+    if (posts.length > pageSize) {
+      posts.pop();
+      nextCursor = posts[posts.length - 1].id;
+    }
+
+    return { posts, nextCursor };
   }
 
   // Get all posts made by a User
-  async getPostsByUser(userId: string): Promise<Post[]> {
+  async getPostsByUser(
+    userId: string,
+    cursor: string,
+    pageSize: number,
+  ): Promise<{ posts: Post[]; nextCursor: string | null }> {
+    const cursorDirection = cursor
+      ? { cursor: { id: cursor } }
+      : { cursor: undefined };
+
     const posts = await this.prisma.post.findMany({
+      ...cursorDirection,
+      take: pageSize + 1,
       where: {
         userId,
       },
     });
-    return posts;
+
+    let nextCursor: string | null = null;
+
+    if (posts.length > pageSize) {
+      posts.pop();
+      nextCursor = posts[posts.length - 1].id;
+    }
+    return { posts, nextCursor };
   }
 
   // Create a post
