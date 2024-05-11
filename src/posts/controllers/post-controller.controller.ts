@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { PostService } from '../services/post-service.service';
 import { Post as PostModel } from '@prisma/client';
 
@@ -12,14 +12,24 @@ export class PostController {
 
   // Get all posts made by a user
   @Get(':userId')
-  async getPostsByUser(@Param('userId') userId: string): Promise<PostModel[]> {
-    return this.postService.getPostsByUser(userId);
+  async getPostsByUser(
+    @Param('userId') userId: string,
+    @Query('cursor') cursor: string,
+    @Query('pageSize') pageSize: number,
+  ): Promise<{ posts: PostModel[]; nextCursor: string | null }> {
+    return this.postService.getPostsByUser(userId, cursor, pageSize);
   }
 
   // Get all existing posts
   @Get()
-  async getAllPosts(): Promise<PostModel[]> {
-    return this.postService.getAllPosts();
+  async getAllPosts(
+    @Query('cursor') cursor: string,
+    @Query('pageSize') pageSize: number,
+  ): Promise<{
+    posts: PostModel[];
+    nextCursor: string | null;
+  }> {
+    return this.postService.getAllPosts(cursor, pageSize);
   }
 
   // Create a post
