@@ -14,7 +14,7 @@ export class PostService {
 
   async getAllPosts(
     cursor: string | undefined,
-    pageSize: number,
+    pageSize: number = 5,
   ): Promise<{ posts: Post[]; nextCursor: string | null }> {
     const cursorDirection = cursor
       ? { cursor: { id: cursor } }

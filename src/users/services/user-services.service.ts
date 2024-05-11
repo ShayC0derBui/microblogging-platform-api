@@ -7,8 +7,40 @@ import { PrismaService } from 'src/prisma/services/prisma-provider.service';
 export class UserService {
   constructor(private readonly prisma: PrismaService) { }
 
+  // Get users
+  async getAllUsers(
+    cursor: string | undefined,
+    pageSize: number = 5,
+  ): Promise<{ users: User[]; nextCursor: string | null }> {
+    const cursorDirection = cursor
+      ? { cursor: { id: cursor } }
+      : { cursor: undefined };
+
+    const users = await this.prisma.user.findMany({
+      ...cursorDirection,
+      take: pageSize + 1,
+    });
+
+    let nextCursor: string | null = null;
+
+    if (users.length > pageSize) {
+      users.pop();
+      nextCursor = users[users.length - 1].id;
+    }
+
+    return { users, nextCursor };
+  }
+
   // Get all followers of a User
-  async getFollowers(userId: string): Promise<User[]> {
+  async getFollowers(
+    userId: string,
+    cursor: string,
+    pageSize: number = 5,
+  ): Promise<{ users: User[]; nextCursor: string | null }> {
+    const cursorDirection = cursor
+      ? { cursor: { id: cursor } }
+      : { cursor: undefined };
+
     const Ids = await this.prisma.user.findUnique({
       where: {
         id: userId,
@@ -17,14 +49,25 @@ export class UserService {
         followingIds: true,
       },
     });
+
     const followers = await this.prisma.user.findMany({
+      ...cursorDirection,
+      take: pageSize + 1,
       where: {
         id: {
           in: Ids.followingIds,
         },
       },
     });
-    return followers;
+
+    let nextCursor: string | null = null;
+
+    if (followers.length > pageSize) {
+      followers.pop();
+      nextCursor = followers[followers.length - 1].id;
+    }
+
+    return { users: followers, nextCursor };
   }
 
   // Get user's basic details
