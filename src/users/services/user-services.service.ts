@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { PrismaClient, User } from '@prisma/client';
+import { User } from '@prisma/client';
 import { UserUpdate } from '../user-types';
+import { PrismaService } from 'src/prisma/services/prisma-provider.service';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaClient) { }
+  constructor(private readonly prisma: PrismaService) { }
 
   // Get all followers of a User
   async getFollowers(userId: string): Promise<User[]> {

@@ -23,9 +23,9 @@ export class PostController {
   }
 
   // Create a post
-  @Post()
+  @Post(':userId')
   async createPost(
-    @Body('userId') userId: string,
+    @Param('userId') userId: string,
     @Body('body') body: string,
   ): Promise<PostModel> {
     return this.postService.createPost(userId, body);
