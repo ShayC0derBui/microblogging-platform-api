@@ -3,7 +3,7 @@ import { faker } from '@faker-js/faker';
 import { PrismaService } from 'src/prisma/services/prisma-provider.service';
 @Injectable()
 export class SeederService {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   async seedUsers(count: number): Promise<void> {
     for (let i = 0; i < count; i++) {
@@ -17,8 +17,6 @@ export class SeederService {
             length: 10,
             memorable: false,
           }),
-          createdAt: new Date(),
-          updatedAt: new Date(),
         },
       });
     }
@@ -41,6 +39,19 @@ export class SeederService {
           });
         }
       }
+    }
+  }
+
+  async seedPosts(count: number): Promise<void> {
+    const users = await this.prisma.user.findMany();
+    for (let i = 0; i < count; i++) {
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+      await this.prisma.post.create({
+        data: {
+          body: faker.lorem.paragraphs(3),
+          userId: randomUser.id,
+        },
+      });
     }
   }
 }
