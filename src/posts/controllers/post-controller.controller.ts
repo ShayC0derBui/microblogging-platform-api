@@ -19,7 +19,7 @@ export class PostControllerController {
   }
 
   // Get all existing posts
-  @Get('posts')
+  @Get()
   async getAllPosts() {
     return this.postService.getAllPosts();
   }
