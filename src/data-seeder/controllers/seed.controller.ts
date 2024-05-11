@@ -3,7 +3,7 @@ import { SeederService } from '../services/seeder.service';
 
 @Controller('seeder')
 export class SeedController {
-  constructor(private readonly seederService: SeederService) {}
+  constructor(private readonly seederService: SeederService) { }
 
   @Post('seedUsers')
   async seedData() {
