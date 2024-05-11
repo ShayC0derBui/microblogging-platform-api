@@ -6,9 +6,6 @@ import { Post } from '@prisma/client';
 export class PostService {
   // - Get all posts made by a user
   // - Get all posts existing posts
-  // - Get all followers of a user
-  // - Get user’s basic details
-  // - Update user’s details
   // - Create a post
 
   constructor(private readonly prisma: PrismaService) { }

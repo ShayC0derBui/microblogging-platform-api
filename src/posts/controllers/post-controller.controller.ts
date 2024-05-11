@@ -5,9 +5,6 @@ import { PostService } from '../services/post-service.service';
 export class PostController {
   // - Get all posts made by a user
   // - Get all posts existing posts
-  // - Get all followers of a user
-  // - Get user’s basic details
-  // - Update user’s details
   // - Create a post
 
   constructor(private readonly postService: PostService) { }
