@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/services/prisma-provider.service';
-import { Post, User } from '@prisma/client';
+import { Post } from '@prisma/client';
 
 @Injectable()
-export class PostServiceService {
+export class PostService {
   // - Get all posts made by a user
   // - Get all posts existing posts
   // - Get all followers of a user

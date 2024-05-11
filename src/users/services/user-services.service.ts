@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaClient, User } from '@prisma/client';
 
 @Injectable()
-export class UserServicesService {
+export class UserService {
   constructor(private readonly prisma: PrismaClient) { }
 
   // Get all followers of a User

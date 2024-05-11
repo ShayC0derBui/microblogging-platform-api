@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { PostServiceService } from '../services/post-service.service';
+import { PostService } from '../services/post-service.service';
 
 @Controller('posts')
-export class PostControllerController {
+export class PostController {
   // - Get all posts made by a user
   // - Get all posts existing posts
   // - Get all followers of a user
@@ -10,7 +10,7 @@ export class PostControllerController {
   // - Update user’s details
   // - Create a post
 
-  constructor(private readonly postService: PostServiceService) { }
+  constructor(private readonly postService: PostService) { }
 
   // Get all posts made by a user
   @Get(':userId')
