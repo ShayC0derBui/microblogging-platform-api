@@ -22,7 +22,7 @@ let PostService = class PostService {
             : { cursor: undefined };
         const posts = await this.prisma.post.findMany({
             ...cursorDirection,
-            take: pageSize + 1,
+            take: Number(pageSize) + 1,
             orderBy: { createdAt: 'desc' },
         });
         let nextCursor = null;
@@ -38,7 +38,7 @@ let PostService = class PostService {
             : { cursor: undefined };
         const posts = await this.prisma.post.findMany({
             ...cursorDirection,
-            take: pageSize + 1,
+            take: Number(pageSize) + 1,
             where: {
                 userId,
             },

@@ -18,7 +18,7 @@ export class UserService {
 
     const users = await this.prisma.user.findMany({
       ...cursorDirection,
-      take: pageSize + 1,
+      take: Number(pageSize) + 1,
     });
 
     let nextCursor: string | null = null;
@@ -52,7 +52,7 @@ export class UserService {
 
     const followers = await this.prisma.user.findMany({
       ...cursorDirection,
-      take: pageSize + 1,
+      take: Number(pageSize) + 1,
       where: {
         id: {
           in: Ids.followingIds,

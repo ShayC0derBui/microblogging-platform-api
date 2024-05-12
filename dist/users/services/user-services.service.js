@@ -22,7 +22,7 @@ let UserService = class UserService {
             : { cursor: undefined };
         const users = await this.prisma.user.findMany({
             ...cursorDirection,
-            take: pageSize + 1,
+            take: Number(pageSize) + 1,
         });
         let nextCursor = null;
         if (users.length > pageSize) {
@@ -45,7 +45,7 @@ let UserService = class UserService {
         });
         const followers = await this.prisma.user.findMany({
             ...cursorDirection,
-            take: pageSize + 1,
+            take: Number(pageSize) + 1,
             where: {
                 id: {
                     in: Ids.followingIds,
